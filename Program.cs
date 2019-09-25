@@ -8,8 +8,8 @@ namespace find_all_numbers
         static void Main(string[] args)
         {
 
-            List<int>   numberList  = new List<int>();
-            int         numberSum   = 0;
+            List<double>    numberList  = new List<double>();
+            double          numberSum   = 0;
 
             Console.Clear();
             Console.WriteLine("Hej och välkommen till nummerplockaren V1.3.");
@@ -43,8 +43,9 @@ namespace find_all_numbers
             // Print all numbers that was found
             Console.Clear();
             Console.WriteLine("Följande siffror gömdes i din textrad:");
+            Console.WriteLine("-- " + inputString);
             
-            foreach (int number in numberList) {
+            foreach (var number in numberList) {
                 Console.WriteLine(": {0}", number);
                 numberSum += number;
             }
@@ -52,7 +53,6 @@ namespace find_all_numbers
             // Print the sum of all numbers
             Console.WriteLine("---------");
             Console.WriteLine("= {0}", numberSum);
-
         }
 
         static string GenerateRandomString(int stringSize)
@@ -72,14 +72,14 @@ namespace find_all_numbers
             return randomString;
         }
 
-        static void FindNumbersInList(string listToCheck, ref List<int> listToAddNumbers)
+        static void FindNumbersInList(string listToCheck, ref List<double> listToAddNumbers)
         {
             for (int i = 0; i < listToCheck.Length; i++)
             {
                 string numbersInSuccession = "";
 
                 // Get numbers in succession
-                while (char.IsDigit(listToCheck[i])) {
+                while (char.IsDigit(listToCheck[i]) || listToCheck[i] == ',') {
                     numbersInSuccession += listToCheck[i];
                     i++;
 
@@ -87,10 +87,20 @@ namespace find_all_numbers
                         break;
                     }
                 }
+
+                // If string only contains a ','. Reset string.
+                if (numbersInSuccession.IndexOf(",") == 0 && numbersInSuccession.Length == 1) {
+                    numbersInSuccession = "";
+                    continue;
+                }
+                // If string starts with a ',', add a 0 in front (0,xxxx)
+                else if (numbersInSuccession.IndexOf(",") == 0 && numbersInSuccession.Length > 1) {
+                    numbersInSuccession = "0" + numbersInSuccession;
+                }
                 
                 // If number(s) has been detected, add it to the list
                 if (numbersInSuccession != "") {
-                    listToAddNumbers.Add(Convert.ToInt32(numbersInSuccession));
+                    listToAddNumbers.Add(Convert.ToDouble(numbersInSuccession));
                 }
             }
         }
