@@ -1,5 +1,6 @@
 ## Hitta alla dolda nummer
-## Steg 1
+
+### Del 1
 
  - Gör ett terminal program som frågar användaren efter en text sträng.
 
